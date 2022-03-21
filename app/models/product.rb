@@ -3,4 +3,7 @@ class Product < ApplicationRecord
   has_many :order_lines
   has_many :orders, through: :order_lines
   has_many :customers, through: :orders
+  scope :sort_by_price, -> { order(:price) }
+  scope :most_purchased, -> { unscoped.joins(:order_lines).group(:id).order('sum(order_lines.quantity) desc').limit(1) }
+  default_scope { order(:name) }
 end
