@@ -3,7 +3,7 @@ class AddOrderStatusToOrders < ActiveRecord::Migration[6.1]
     reversible do |dir|
       dir.up do
         execute <<-SQL
-          CREATE TYPE order_status AS ENUM ('pending', 'complete', 'cancelled');
+          CREATE TYPE order_status AS ENUM ('pending', 'completed', 'cancelled');
         SQL
       end
 
@@ -13,7 +13,7 @@ class AddOrderStatusToOrders < ActiveRecord::Migration[6.1]
         SQL
       end
     end
-    add_column :orders, :order_status, :order_status
+    add_column :orders, :order_status, :order_status, default: 'pending'
     add_index :orders, :order_status
   end
 end

@@ -15,7 +15,7 @@ SET row_security = off;
 
 CREATE TYPE public.order_status AS ENUM (
     'pending',
-    'complete',
+    'completed',
     'cancelled'
 );
 
@@ -42,10 +42,10 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.customers (
     id bigint NOT NULL,
-    first_name character varying,
-    last_name character varying,
-    address character varying,
-    phone character varying,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL,
+    address character varying NOT NULL,
+    phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -78,8 +78,8 @@ CREATE TABLE public.order_lines (
     id bigint NOT NULL,
     order_id bigint NOT NULL,
     product_id bigint NOT NULL,
-    quantity integer,
-    price numeric(8,2),
+    quantity integer NOT NULL,
+    price numeric(8,2) NOT NULL,
     total numeric(8,2),
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -111,12 +111,12 @@ ALTER SEQUENCE public.order_lines_id_seq OWNED BY public.order_lines.id;
 
 CREATE TABLE public.orders (
     id bigint NOT NULL,
-    date date,
+    date date DEFAULT CURRENT_TIMESTAMP,
     customer_id bigint NOT NULL,
-    total numeric(8,2),
+    total numeric(8,2) DEFAULT 0.0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    order_status public.order_status
+    order_status public.order_status DEFAULT 'pending'::public.order_status
 );
 
 
@@ -145,11 +145,11 @@ ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
 
 CREATE TABLE public.products (
     id bigint NOT NULL,
-    sku character varying,
-    name character varying,
-    description character varying,
-    price numeric(8,2),
-    stock integer,
+    sku character varying NOT NULL,
+    name character varying NOT NULL,
+    description character varying DEFAULT ''::character varying,
+    price numeric(8,2) NOT NULL,
+    stock integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
