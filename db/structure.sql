@@ -79,7 +79,7 @@ CREATE TABLE public.order_lines (
     order_id bigint NOT NULL,
     product_id bigint NOT NULL,
     quantity integer NOT NULL,
-    price numeric(8,2) NOT NULL,
+    price numeric(8,2),
     total numeric(8,2),
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
